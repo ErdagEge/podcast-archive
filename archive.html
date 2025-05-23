@@ -19,7 +19,6 @@
                     <li><a href="index.html">Home</a></li>
                     <li class="current"><a href="archive.html">Episodes</a></li>
                     <li><a href="about.html">About</a></li>
-                    <li><a href="contact.html">Contact</a></li>
                 </ul>
         </nav>
     </header>
@@ -34,25 +33,30 @@
         <p>Browse the full collection of discussions, deep dives, and cultural commentary.</p>
     </section>
 
-    <section class="featured-episodes">
-
-        <article class="episode">
-            <h3><a href="episode1.html">Episode 1: The Art of Protest</a></h3>
-            <p>A journey through the history of rebellion and resistance.</p>
-        </article>
-
-        <article class="episode">
-            <h3><a href="episode2.html">Episode 2: Cinema as Revolution</a></h3>
-            <p>Exploring how movies have shaped political consciousness.</p>
-        </article>
-
-        <article class="episode">
-            <h3><a href="episode3.html">Episode 3: Fast Culture, Slow Thinking</a></h3>
-            <p>How rapid media consumption is changing our minds.</p>
-        </article>
-
+    <section class="featured-episodes" id="episodes-list">
+      <!-- Episodes will be loaded here by JavaScript -->
     </section>
-
+    <script>
+    fetch('episodes.json')
+      .then(res => res.json())
+      .then(episodes => {
+        const container = document.getElementById('episodes-list');
+        container.innerHTML = '';
+        episodes.forEach(ep => {
+          container.innerHTML += `
+            <article class="episode">
+              <h3>${ep.title}</h3>
+              <p>${ep.description}</p>
+              <iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/${ep.spotifyId}" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+            </article>
+          `;
+        });
+      })
+      .catch(err => {
+        document.getElementById('episodes-list').innerHTML = "<p>Could not load episodes.</p>";
+        console.error(err);
+      });
+    </script>
     <!-- Footer -->
     <footer>
         <p>&copy; 2025 Açık Büfe Diyalog. All rights reserved.</p>

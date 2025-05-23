@@ -8,21 +8,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ege's Podcast Archive</title>
     <link rel="stylesheet" href="style.css">
-</head>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "PodcastSeries",
-  "name": "Açık Büfe Diyalog",
-  "url": "https://github.com/ErdagEge/podcast-archive",
-  "description": "Archive of the Açık Büfe Diyalog podcast.",
-  "inLanguage": "tr",
-  "author": {
-    "@type": "Person",
-    "name": "Ege Erdağ"
-  }
-}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "PodcastSeries",
+      "name": "Açık Büfe Diyalog",
+      "url": "https://github.com/ErdagEge/podcast-archive",
+      "description": "Archive of the Açık Büfe Diyalog podcast.",
+      "inLanguage": "tr",
+      "author": {
+        "@type": "Person",
+        "name": "Ege Erdağ"
+      }
+    }
 </script>
+</head>
+
 <body>
 
     <!-- Navigation -->
@@ -43,32 +44,46 @@
     </section>
 
     <!-- Featured Episodes -->
-    <section class="featured-episodes">
+    <section class="featured-episodes" id="featured-episodes">
         <h2>Featured Episodes</h2>
-
-        <article class="episode">
-            <img src="images/episode1-cover.jpg" alt="Episode 1 Cover">
-            <h3>Episode 1: Hızlı Tüketimde Kayboluş</h3>
-            <p>How rapid media consumption is changing our minds.</p>
-            <a href="episode1.html">Listen Now</a>
-        </article>
-
-        <article class="episode">
-            <img src="images/episode2-cover.jpg" alt="Episode 2 Cover">
-            <h3>Episode 2: Tradwife | Kadını Estetikle Hapsetmek</h3>
-            <p>Exploring how "tradwife" trends shaping modern gender roles.</p>
-            <a href="episode2.html">Listen Now</a>
-        </article>
-
-        <article class="episode">
-            <img src="images/episode3-cover.jpg" alt="Episode 3 Cover">
-            <h3>Episode 3: Nostalji | Yaşanmamış Geçmişe Özlem</h3>
-            <p>A deep dive into the nature and reality of nostalgia.</p>
-            <a href="episode3.html">Listen Now</a>
-        </article>
-
+        <!-- Episodes will be loaded here by JavaScript -->
     </section>
-
+    <script>
+    // Manually specify the Spotify IDs of your featured episodes here
+    const featuredIds = [
+      '4dzCsEeB19TV2GeZYoZQTj', // Pilot
+      '0RlORnkobpzYpyGknqWHuq', // Marvel, Sinema ve Scorcese Aşk Üçgeni
+      '3Bz2S95RxdnKUHQGtQBPm6'  // Mizah Çatısında Adam Öldürmek
+    ];
+    fetch('episodes.json')
+      .then(res => res.json())
+      .then(episodes => {
+        const container = document.getElementById('featured-episodes');
+        featuredIds.forEach(id => {
+          const ep = episodes.find(e => e.spotifyId === id);
+          if (ep) {
+            container.innerHTML += `
+              <article class="episode">
+                <h3>${ep.title}</h3>
+                <p>${ep.description || ''}</p>
+                <iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/${ep.spotifyId}" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+              </article>
+            `;
+          } else {
+            container.innerHTML += `
+              <article class="episode">
+                <h3>Featured Episode</h3>
+                <p>Update the featuredIds array in the script with a valid Spotify episode ID from episodes.json.</p>
+              </article>
+            `;
+          }
+        });
+      })
+      .catch(err => {
+        document.getElementById('featured-episodes').innerHTML += "<p>Could not load featured episodes.</p>";
+        console.error(err);
+      });
+    </script>
     <!-- Footer -->
     <footer>
         <p>&copy; 2025 Açık Büfe Diyalog. All rights reserved.</p>
