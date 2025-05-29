@@ -19,6 +19,9 @@ body {
 .hero,
 .featured-episodes,
 footer {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
     padding-left: 20px;
     padding-right: 20px;
 }
@@ -81,6 +84,7 @@ nav ul li.current a {
 /* Featured Episodes */
 .featured-episodes {
     margin-top: 40px;
+    text-align: center;
 }
 
 .featured-episodes h2 {
@@ -88,11 +92,15 @@ nav ul li.current a {
     margin-bottom: 20px;
 }
 
+.featured-episodes p {
+    text-align: center;
+}
+
 .episode {
     background: #fff;
     padding: 16px;
     margin: 16px auto;
-    max-width: 500px;
+    max-width: 100%; /* Allow episode cards to fill the container */
     border-radius: 6px;
     box-shadow: none;
     border: 1px solid #eee;
