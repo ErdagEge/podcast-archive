@@ -19,7 +19,7 @@ body {
 .hero,
 .featured-episodes,
 footer {
-    max-width: 1200px;
+    max-width: 900px;
     margin-left: auto;
     margin-right: auto;
     padding-left: 20px;
@@ -112,9 +112,13 @@ nav ul li.current a {
     color: #0077cc;
 }
 
+.episode h3 {
+    margin-bottom: 10px; /* Add space between the header and the text */
+}
+
 .episode p {
     color: #666;
-    margin-bottom: 15px;
+    margin-bottom: 15px; /* Add space between the text and the Spotify embed */
 }
 
 .episode a {
