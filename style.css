@@ -81,6 +81,19 @@ nav ul li.current a {
     color: #555;
 }
 
+/* Search section */
+.search {
+    text-align: center;
+    margin: 20px 0;
+}
+
+#search-episodes {
+    padding: 8px;
+    width: 100%;
+    max-width: 400px;
+    font-size: 1rem;
+}
+
 /* Featured Episodes */
 .featured-episodes {
     margin-top: 40px;
