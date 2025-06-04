@@ -23,35 +23,56 @@
         </nav>
     </header>
 
-<!-- SEARCH FUNCTIONALITY FOR LATER
+
     <section class="search">
-      <label for="search-episodes">Search Episodes:</label>
-      <input type="text" id="search-episodes" name="search-episodes" placeholder="Type to search..." />
+      <label class="sr-only" for="search-episodes">Search Episodes</label>
+      <input type="text" id="search-episodes" placeholder="Bölümlerde ara..." />
     </section>
+
     <section class="hero">
         <h1>All Episodes</h1>
         <p>Browse the full collection of discussions, deep dives, and cultural commentary.</p>
-    </section> 
-  -->
+    </section>
 
     <section class="featured-episodes" id="episodes-list">
       <!-- Episodes will be loaded here by JavaScript -->
     </section>
     <script>
+    let allEpisodes = [];
+
+    function renderEpisodes(list) {
+      const container = document.getElementById('episodes-list');
+      container.innerHTML = '';
+      if (list.length === 0) {
+        container.innerHTML = '<p>No episodes found.</p>';
+        return;
+      }
+      list.forEach(ep => {
+        container.innerHTML += `
+          <article class="episode">
+            <h3>${ep.title || 'Untitled Episode'}</h3>
+            <p>${ep.description || ''}</p>
+            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/${ep.spotifyId}" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+          </article>
+        `;
+      });
+    }
+
     fetch('episodes.json')
       .then(res => res.json())
       .then(episodes => {
-        const container = document.getElementById('episodes-list');
-        container.innerHTML = '';
         // Sort episodes from new to old (latest first)
-        episodes.slice().reverse().forEach(ep => {
-          container.innerHTML += `
-            <article class="episode">
-              <h3>${ep.title || 'Untitled Episode'}</h3>
-              <p>${ep.description || ''}</p>
-              <iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/${ep.spotifyId}" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-            </article>
-          `;
+        allEpisodes = episodes.slice().reverse();
+        renderEpisodes(allEpisodes);
+
+        const searchInput = document.getElementById('search-episodes');
+        searchInput.addEventListener('input', () => {
+          const query = searchInput.value.toLowerCase();
+          const filtered = allEpisodes.filter(ep =>
+            (ep.title && ep.title.toLowerCase().includes(query)) ||
+            (ep.description && ep.description.toLowerCase().includes(query))
+          );
+          renderEpisodes(filtered);
         });
       })
       .catch(err => {
